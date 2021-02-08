@@ -1,4 +1,6 @@
 function RandomSpin (SpinDirection: number) {
+    basic.clearScreen()
+    music.startMelody(music.builtInMelody(Melodies.Chase), MelodyOptions.Once)
     Result = randint(1, 12)
     Speed = 100
     moveMotorZIP.setZipLedColor(0, Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Red))
@@ -6,6 +8,10 @@ function RandomSpin (SpinDirection: number) {
     moveMotorZIP.setZipLedColor(2, Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.White))
     moveMotorZIP.setZipLedColor(3, Kitronik_Move_Motor.colors(Kitronik_Move_Motor.ZipLedColors.Yellow))
     while (Speed > 3) {
+        led.plotBarGraph(
+        Speed,
+        100
+        )
         moveMotorZIP.rotate(1)
         moveMotorZIP.show()
         if (SpinDirection < 0) {
@@ -14,7 +20,7 @@ function RandomSpin (SpinDirection: number) {
             Kitronik_Move_Motor.spin(Kitronik_Move_Motor.SpinDirections.Right, Speed)
         }
         basic.pause(randint(150, MaxTime))
-        Speed += randint(-15, 3)
+        Speed += randint(-15, 0)
     }
     Kitronik_Move_Motor.stop()
     if (Result <= 6) {
@@ -40,8 +46,6 @@ function ShowCheekyMonkey () {
         `)
 }
 input.onButtonPressed(Button.A, function () {
-    music.startMelody(music.builtInMelody(Melodies.Chase), MelodyOptions.Once)
-    basic.clearScreen()
     RandomSpin(1)
 })
 function ShowPool () {
@@ -67,8 +71,6 @@ function ShowBanana () {
         `)
 }
 input.onButtonPressed(Button.B, function () {
-    music.startMelody(music.builtInMelody(Melodies.Chase), MelodyOptions.Once)
-    basic.clearScreen()
     RandomSpin(-1)
 })
 function ShowQuestion () {
@@ -86,5 +88,12 @@ let Speed = 0
 let Result = 0
 let MaxTime = 0
 let moveMotorZIP: Kitronik_Move_Motor.MoveMotorZIP = null
+basic.showLeds(`
+    . . . . .
+    . . . . #
+    . . . # .
+    # . # . .
+    . # . . .
+    `)
 moveMotorZIP = Kitronik_Move_Motor.createMoveMotorZIPLED(4)
 MaxTime = 500
